@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "721535992428",
+    "project_id": "mynotes-armandoal-flutter",
+    "storage_bucket": "mynotes-armandoal-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721535992428:android:86b84323e72c90f23c8e49",
+        "android_client_info": {
+          "package_name": "com.tmh.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721535992428-kmfuccgne8l7o9ecm82cjdke481gfe08.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0Wd7GYpVGpnD_OSRzSa8yhEYkAspYdt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721535992428-kmfuccgne8l7o9ecm82cjdke481gfe08.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
