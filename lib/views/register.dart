@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/views/routes.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -83,7 +84,8 @@ class _RegisterState extends State<Register> {
                         );
                         print(userCredential);
                         Future.delayed(const Duration(seconds: 1), () {
-                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
+                          Navigator.of(context).pushReplacementNamed(verify);
                         });
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
