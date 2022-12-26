@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/login.dart';
+import 'package:mynotes/views/register.dart';
 
 import 'firebase_options.dart';
 
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
+      routes: {
+        "/home/": (context) => const HomePage(),
+        "/login/": (context) => const Login(),
+        "/register/": (context) => const Register(),
+      },
     );
   }
 }
@@ -51,50 +57,45 @@ class _HomePageState extends State<HomePage> {
             case ConnectionState.done:
               final user = FirebaseAuth.instance.currentUser;
               if (user != null) {
-                print(user);
+                return Center(
+                  child: start(),
+                );
+              } else {
+                return const Center(
+                  child: Login(),
+                );
               }
-
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      "My Notes Project",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Image.asset(
-                      "../images/book.png",
-                      height: 100,
-                      width: 100,
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Login(),
-                          ),
-                        );
-                      },
-                      child: const Text("Login"),
-                    ),
-                  ],
-                ),
-              );
             default:
               return const Text("Loading...");
           }
         },
       ),
+    );
+  }
+
+  Widget start() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const Text(
+          "My Notes Project",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Image.asset(
+          "../images/book.png",
+          height: 100,
+          width: 100,
+        ),
+        const SizedBox(
+          height: 100,
+        ),
+      ],
     );
   }
 }
