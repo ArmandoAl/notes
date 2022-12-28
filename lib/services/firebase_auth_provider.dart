@@ -1,5 +1,8 @@
 // ignore_for_file: unused_catch_clause
 
+import 'package:firebase_core/firebase_core.dart';
+
+import '../firebase_options.dart';
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';
 import 'auth_user.dart';
@@ -8,6 +11,13 @@ import 'package:firebase_auth/firebase_auth.dart'
 
 class FirebaseAuthProvider implements AuthProvider {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   @override
   AuthUser? get currentUser {

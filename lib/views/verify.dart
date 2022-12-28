@@ -60,7 +60,7 @@ class _VerifyState extends State<Verify> {
             TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil(home, (route) => false);
+                    .pushNamedAndRemoveUntil(login, (route) => false);
               },
               child: const Text(
                 "Go to Login",

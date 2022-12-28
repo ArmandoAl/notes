@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/views/routes.dart';
-
 import '../components/show_error.dart';
+import '../services/auth_exceptions.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -79,15 +79,14 @@ class _LoginState extends State<Login> {
                     final password = _password.text;
 
                     try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
+                      await AuthService.firebase()
+                          .loginIn(email: email, password: password);
+
                       print("Succesfull");
-                      final user = FirebaseAuth.instance.currentUser;
+                      final user = AuthService.firebase().currentUser;
                       print(user);
                       if (user != null) {
-                        if (user.emailVerified == false) {
+                        if (user.isEmailVerified == false) {
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               verify, (route) => false);
@@ -98,16 +97,24 @@ class _LoginState extends State<Login> {
                           });
                         }
                       }
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        await showmessage(context, "user not found");
-                      } else if (e.code == 'wrong-password') {
-                        await showmessage(context, "wrong password");
-                      } else {
-                        await showmessage(context, "Error: ${e.code}");
-                      }
+                    } on UserNotFooundAuthException {
+                      await showmessage(context, "User not found");
+                    } on WrongPasswordAuthException {
+                      await showmessage(context, "Wrong password");
+                    } on EmailAlreadyInUseAuthException {
+                      await showmessage(context, "Email already in use");
+                    } on InvalidEmailAuthException {
+                      await showmessage(context, "Invalid email");
+                    } on WeakPasswordAuthException {
+                      await showmessage(context, "Weak password");
+                    } on GenericAuthException {
+                      await showmessage(context, "Generic error");
+                    } on UserNotLoggedInException {
+                      await showmessage(context, "User not logged in");
+                    } on UserNotVerifiedException {
+                      await showmessage(context, "User not verified");
                     } catch (e) {
-                      await showmessage(context, "Error: ${e.toString()}");
+                      await showmessage(context, "Unknown error");
                     }
                   },
                   child: const Text(
@@ -116,7 +123,7 @@ class _LoginState extends State<Login> {
                       color: Colors.black,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
