@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/routes.dart';
 
+import '../services/auth_exceptions.dart';
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -83,18 +85,26 @@ class _RegisterState extends State<Register> {
                           password: password,
                         );
                         print(userCredential);
+
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user != null && !user.emailVerified) {
+                          await user.sendEmailVerification();
+                        }
+
                         Future.delayed(const Duration(seconds: 1), () {
                           // Navigator.of(context).pop();
                           Navigator.of(context).pushReplacementNamed(verify);
                         });
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
-                          print('The password provided is too weak.');
+                          throw WeakPasswordAuthException();
                         } else if (e.code == 'email-already-in-use') {
-                          print('The account already exists for that email.');
+                          throw EmailAlreadyInUseAuthException();
+                        } else {
+                          throw UserNotLoggedInException();
                         }
                       } catch (e) {
-                        print(e);
+                        throw GenericAuthException();
                       }
                     },
                     child: const Text(

@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
   Widget Start() {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("MyNotes"),
+        title: const Text("Notes"),
         actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (MenuAction result) async {

@@ -25,31 +25,45 @@ class _VerifyState extends State<Verify> {
       body: Center(
         child: Column(
           children: [
-            const Text("Verify your gmail"),
+            const Text("We sent an email to confirm your account"),
+            const SizedBox(
+              height: 300,
+            ),
+            const Text("If you havent received the email click on the button"),
             TextButton(
               onPressed: () async {
                 final user = FirebaseAuth.instance.currentUser;
                 await user?.sendEmailVerification();
                 print("Verification email sent");
                 print(user);
-
-                timer = Timer.periodic(
-                  const Duration(seconds: 5),
-                  (timer) async {
-                    await user?.reload();
-                    print(user);
-                    if (user?.emailVerified == true) {
-                      print("Email verified");
-                      timer.cancel();
-                    }
-                  },
-                );
+                // timer = Timer.periodic(
+                //   const Duration(seconds: 5),
+                //   (timer) async {
+                //     await user?.reload();
+                //     print(user);
+                //     if (user?.emailVerified == true) {
+                //       print("Email verified");
+                //       timer.cancel();
+                //     }
+                //   },
+                // );
 
                 // ignore: use_build_context_synchronously
-                Navigator.of(context).pushReplacementNamed(home);
               },
               child: const Text(
                 "Verify",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(home, (route) => false);
+              },
+              child: const Text(
+                "Go to Login",
                 style: TextStyle(
                   color: Colors.black,
                 ),

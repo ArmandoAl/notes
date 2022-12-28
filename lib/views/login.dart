@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/routes.dart';
 
+import '../components/show_error.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -84,16 +86,28 @@ class _LoginState extends State<Login> {
                       print("Succesfull");
                       final user = FirebaseAuth.instance.currentUser;
                       print(user);
-                      Future.delayed(const Duration(seconds: 1), () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            "/home/", (route) => false);
-                      });
+                      if (user != null) {
+                        if (user.emailVerified == false) {
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              verify, (route) => false);
+                        } else {
+                          Future.delayed(const Duration(seconds: 1), () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                home, (route) => false);
+                          });
+                        }
+                      }
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
+                        await showmessage(context, "user not found");
                       } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
+                        await showmessage(context, "wrong password");
+                      } else {
+                        await showmessage(context, "Error: ${e.code}");
                       }
+                    } catch (e) {
+                      await showmessage(context, "Error: ${e.toString()}");
                     }
                   },
                   child: const Text(
