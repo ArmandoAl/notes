@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/views/routes.dart';
 import '../components/show_error.dart';
-import '../services/auth_exceptions.dart';
+import '../services/auth/auth_exceptions.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

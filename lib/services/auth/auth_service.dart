@@ -1,4 +1,4 @@
-import 'package:mynotes/services/firebase_auth_provider.dart';
+import 'package:mynotes/services/auth/firebase_auth_provider.dart';
 
 import 'auth_provider.dart';
 import 'auth_user.dart';

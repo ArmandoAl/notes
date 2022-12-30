@@ -2,8 +2,8 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mynotes/firebase_options.dart';
-import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/services/firebase_options.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/views/login.dart';
 import 'package:mynotes/views/notes.dart';
 import 'package:mynotes/views/register.dart';

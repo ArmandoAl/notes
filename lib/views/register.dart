@@ -3,10 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/components/show_error.dart';
-import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/views/routes.dart';
 
-import '../services/auth_exceptions.dart';
+import '../services/auth/auth_exceptions.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
