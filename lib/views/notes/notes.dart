@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/services/crud/notes_services.dart';
 import 'package:mynotes/views/routes.dart';
 
-import '../enums/menu_action.dart';
+import '../../enums/menu_action.dart';
 
 class Start extends StatefulWidget {
   const Start({super.key});
@@ -12,12 +13,32 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
+  late final NotesService _notesService;
+  String get userEmail => AuthService.firebase().currentUser!.email!;
+
+  @override
+  void initState() {
+    _notesService = NotesService();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notes"),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newNote);
+              },
+              icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
             onSelected: (MenuAction result) async {
               switch (result) {
@@ -42,30 +63,31 @@ class _StartState extends State<Start> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              "My Notes Project",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Image.asset(
-              "../images/book.png",
-              height: 100,
-              width: 100,
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future: _notesService.getOrCreateUser(email: userEmail),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+              return StreamBuilder(
+                stream: _notesService.allNotes,
+                builder: ((context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Center(child: Text("DONE "));
+
+                    case ConnectionState.done:
+
+                    default:
+                      return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+              );
+            default:
+              return const Center(child: Text("Default"));
+          }
+        },
       ),
     );
   }

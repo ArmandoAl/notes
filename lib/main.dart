@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:mynotes/services/firebase_options.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/views/login.dart';
-import 'package:mynotes/views/notes.dart';
+import 'package:mynotes/views/notes/new_notes_view.dart';
+import 'package:mynotes/views/notes/notes.dart';
 import 'package:mynotes/views/register.dart';
 import 'package:mynotes/views/routes.dart';
 import 'package:mynotes/views/verify.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         login: (context) => const Login(),
         register: (context) => const Register(),
         verify: (context) => const Verify(),
+        newNote: (context) => const NewNote(),
       },
     );
   }
